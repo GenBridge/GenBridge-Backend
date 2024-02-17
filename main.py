@@ -5,18 +5,11 @@ import os
 
 app = FastAPI()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-"""
 # Database URL from environment variable
 DATABASE_URL = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://", 1)
 
 # Initialize the Database
 database = Database(DATABASE_URL)
-
 
 # Define a Pydantic model for the User
 class User(BaseModel):
@@ -58,4 +51,3 @@ async def match():
     # Simple example response, adjust according to your matching logic
     return {"message": "Matched users successfully!", "users": result}
     
-"""
