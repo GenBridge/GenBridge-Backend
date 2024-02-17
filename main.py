@@ -4,7 +4,10 @@ from pydantic import BaseModel
 from databases import Database
 import os
 import random
+import logging
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -61,12 +64,15 @@ async def match(for_user: User):
     # Fetch users from the database
     match_senior = not for_user.senior
     query = "SELECT * FROM users WHERE senior = :match_senior"
+    logger.info("Querying database: %s", query)
     result = await database.fetch_all(query=query)
     if not result:
         raise HTTPException(status_code=404, detail="No users found")
     match = random.choice(result)
-    if not matched_users:
+    if not match:
+        logger.info("No match found")
         return {"message": "No matching users found", "user": match}
     else:
+        logger.info("Found match: %s", match)
         return {"message": "Matched users successfully!", "user": match}
 
