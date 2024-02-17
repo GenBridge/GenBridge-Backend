@@ -58,9 +58,9 @@ async def signup(user: User):
     query = "INSERT INTO users(name, senior, interests) VALUES (:name, :senior, :interests)"
     values = {"name": user.name, "senior": user.senior, "interests": user.interests}
     await database.execute(query=query, values=values)
-    match_result = await match(for_user=user)
-    return {"message": f"User {user.name} signed up successfully!", "match": match_result}
+    return {"message": f"User {user.name} signed up successfully!"}
 
+@app.post("/match/")
 async def match(for_user: User):
     # Fetch users from the database
     match_senior = not for_user.senior
