@@ -1,9 +1,24 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from databases import Database
 import os
 
 app = FastAPI()
+
+allowed_origins = [
+    "http://localhost:3000",  # Assuming your React app runs on localhost:3000
+    "https://gen-bridge-frontend.vercel.app/",  # Your production React app domain
+]
+
+# Add CORSMiddleware to the application
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows specified origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 # Database URL from environment variable
 DATABASE_URL = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://", 1)
