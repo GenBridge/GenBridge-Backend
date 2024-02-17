@@ -1,2 +1,4 @@
-fastapi~=0.103.1
-pydantic~=1.10.13
+fastapi
+pydantic
+databases
+asyncpg
