@@ -65,7 +65,8 @@ async def match(for_user: User):
     match_senior = not for_user.senior
     query = "SELECT * FROM users WHERE senior = :match_senior"
     logger.info("Querying database: %s", query)
-    result = await database.fetch_all(query=query)
+    values = {"match_senior": match_senior}
+    result = await database.execute(query=query, values=values)
     if not result:
         raise HTTPException(status_code=404, detail="No users found")
     match = random.choice(result)
