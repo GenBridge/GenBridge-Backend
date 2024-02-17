@@ -15,7 +15,7 @@ database = Database(DATABASE_URL)
 # Define a Pydantic model for the User
 class User(BaseModel):
     name: str
-    email: str
+    senior: bool
     interests: list[str]
 
 
@@ -32,8 +32,8 @@ async def shutdown():
 
 @app.post("/signup/")
 async def signup(user: User):
-    query = "INSERT INTO users(name, email, interests) VALUES (:name, :email, :interests)"
-    values = {"name": user.name, "email": user.email, "interests": user.interests}
+    query = "INSERT INTO users(name, senior, interests) VALUES (:name, :senior, :interests)"
+    values = {"name": user.name, "senior": user.senior, "interests": user.interests}
     await database.execute(query=query, values=values)
     return {"message": f"User {user.name} signed up successfully!"}
 
