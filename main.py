@@ -58,6 +58,7 @@ async def signup(user: User):
     query = "INSERT INTO users(name, senior, interests) VALUES (:name, :senior, :interests)"
     values = {"name": user.name, "senior": user.senior, "interests": user.interests}
     await database.execute(query=query, values=values)
+    database.disconnect()
     return {"message": f"User {user.name} signed up successfully!", "matches": await match(for_user=user)}
 
 async def match(for_user: User):
