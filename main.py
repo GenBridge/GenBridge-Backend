@@ -6,7 +6,7 @@ import os
 app = FastAPI()
 
 # Database URL from environment variable
-DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASE_URL = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://", 1)
 
 # Initialize the Database
 database = Database(DATABASE_URL)
