@@ -30,6 +30,10 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the GenBridge Backend!"}
+
 @app.post("/signup/")
 async def signup(user: User):
     query = "INSERT INTO users(name, senior, interests) VALUES (:name, :senior, :interests)"
