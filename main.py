@@ -59,7 +59,7 @@ async def signup(user: User):
     values = {"name": user.name, "senior": user.senior, "interests": user.interests}
     await database.execute(query=query, values=values)
     database.disconnect()
-    return {"message": f"User {user.name} signed up successfully!", "matches": await match(for_user=user)}
+    return {"message": f"User {user.name} signed up successfully!", "match": await match(for_user=user)}
 
 async def match(for_user: User):
     # Fetch users from the database
@@ -67,7 +67,7 @@ async def match(for_user: User):
     query = "SELECT * FROM users WHERE senior = :match_senior"
     logger.info("Querying database: %s", query)
     values = {"match_senior": match_senior}
-    result = await database.execute(query=query, values=values)
+    result = await database.fetch_all(query=query, values=values)
     if not result:
         raise HTTPException(status_code=404, detail="No users found")
     match = random.choice(result)
