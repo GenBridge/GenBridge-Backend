@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from databases import Database
 import os
+import random
+
 
 app = FastAPI()
 
@@ -53,16 +55,18 @@ async def signup(user: User):
     query = "INSERT INTO users(name, senior, interests) VALUES (:name, :senior, :interests)"
     values = {"name": user.name, "senior": user.senior, "interests": user.interests}
     await database.execute(query=query, values=values)
-    return {"message": f"User {user.name} signed up successfully!"}
+    return {"message": f"User {user.name} signed up successfully!", "matches": await match(for_user=user)}
 
-@app.get("/match/")
-async def match():
-    # Placeholder for matching logic
-    # Fetch users from the database and implement matching logic here
-    query = "SELECT * FROM users"
+async def match(for_user: User):
+    # Fetch users from the database
+    match_senior = not for_user.senior
+    query = "SELECT * FROM users WHERE senior = :match_senior"
     result = await database.fetch_all(query=query)
     if not result:
         raise HTTPException(status_code=404, detail="No users found")
-    # Simple example response, adjust according to your matching logic
-    return {"message": "Matched users successfully!", "users": result}
-    
+    match = random.choice(result)
+    if not matched_users:
+        return {"message": "No matching users found", "user": match}
+    else:
+        return {"message": "Matched users successfully!", "user": match}
+
