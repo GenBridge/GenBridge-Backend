@@ -5,6 +5,12 @@ import os
 
 app = FastAPI()
 
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+"""
 # Database URL from environment variable
 DATABASE_URL = os.getenv("DATABASE_URL").replace("postgres://", "postgresql://", 1)
 
@@ -51,3 +57,5 @@ async def match():
         raise HTTPException(status_code=404, detail="No users found")
     # Simple example response, adjust according to your matching logic
     return {"message": "Matched users successfully!", "users": result}
+    
+"""
