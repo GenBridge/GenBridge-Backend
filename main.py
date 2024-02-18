@@ -55,8 +55,8 @@ async def root():
 
 @app.post("/signup/")
 async def signup(user: User):
-    query = "INSERT INTO users(name, senior, interests) VALUES (:name, :senior, :interests)"
-    values = {"name": user.name, "senior": user.senior, "interests": user.interests}
+    query = "INSERT INTO users(name, senior, interests) VALUES (:name, :senior, :interests, :calendly)"
+    values = {"name": user.name, "senior": user.senior, "interests": user.interests, "calendly": user.calendly}
     await database.execute(query=query, values=values)
     return {"message": f"User {user.name} signed up successfully!"}
 
