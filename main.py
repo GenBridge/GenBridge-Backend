@@ -36,6 +36,7 @@ class User(BaseModel):
     name: str
     senior: bool
     interests: list[str]
+    calendly: str
 
 
 # In-memory storage for demonstration
